@@ -1,0 +1,429 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<Layout>
+  <div class="container">
+    <header class="header">
+      <a href="/" class="wordmark">{site.domain}</a>
+      <button
+        id="theme-toggle"
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle color theme"
+        title="Toggle color theme"
+      >
+        <svg
+          class="icon-sun"
+          width="17"
+          height="17"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+        <svg
+          class="icon-moon"
+          width="17"
+          height="17"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <main class="main">
+      <section class="intro" aria-labelledby="intro-heading">
+        <h1 id="intro-heading">{site.name}</h1>
+        <p class="bio">{site.bio}</p>
+      </section>
+
+      <section class="section" aria-labelledby="links-heading">
+        <h2 id="links-heading" class="section-title">Links</h2>
+        <ul class="link-list">
+          {
+            site.socials.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  target={item.href.startsWith('http') ? '_blank' : undefined}
+                  rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  class="link-row"
+                >
+                  <span class="link-label">
+                    {item.icon === 'github' && (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                      </svg>
+                    )}
+                    <span>{item.label}</span>
+                  </span>
+                  <span class="link-handle">
+                    {item.handle}
+                    <span class="arrow" aria-hidden="true">↗</span>
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="section" aria-labelledby="projects-heading">
+        <div class="section-header">
+          <h2 id="projects-heading" class="section-title">Selected Projects</h2>
+          <a
+            href={`${site.githubProfile}?tab=repositories`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-more"
+          >
+            All on GitHub <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <ul class="project-list">
+          {
+            site.projects.map((project) => (
+              <li>
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-card"
+                >
+                  <div class="project-top">
+                    <span class="project-name">{project.name}</span>
+                    <span class="arrow" aria-hidden="true">↗</span>
+                  </div>
+                  <p class="project-description">{project.description}</p>
+                  {project.tags.length > 0 && (
+                    <div class="project-tags">
+                      {project.tags.map((tag) => (
+                        <span class="tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© {year} {site.name}</span>
+      <span class="footer-domain">{site.domain}</span>
+    </footer>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+
+      const getEffectiveTheme = () => {
+        const attr = document.documentElement.getAttribute('data-theme');
+        if (attr === 'light' || attr === 'dark') return attr;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+      };
+
+      btn.addEventListener('click', () => {
+        const next = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    })();
+  </script>
+</Layout>
+
+<style>
+  .container {
+    width: 100%;
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 2.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+    background: var(--surface-hover);
+  }
+
+  /* Show moon in light mode, sun in dark mode */
+  .icon-sun {
+    display: none;
+  }
+  .icon-moon {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .icon-sun {
+      display: block;
+    }
+    :global(:root:not([data-theme='light'])) .icon-moon {
+      display: none;
+    }
+  }
+
+  :global(:root[data-theme='dark']) .icon-sun {
+    display: block;
+  }
+  :global(:root[data-theme='dark']) .icon-moon {
+    display: none;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  .intro h1 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+
+  .bio {
+    margin: 0;
+    font-size: 1.0625rem;
+    color: var(--text-muted);
+    max-width: 54ch;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    margin: 0 0 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-subtle);
+  }
+
+  .section-header .section-title {
+    margin-bottom: 0;
+  }
+
+  .section-more {
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    transition: color 0.15s ease;
+  }
+
+  .section-more:hover {
+    color: var(--text);
+  }
+
+  .link-list,
+  .project-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .link-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .link-row:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+  }
+
+  .link-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .link-handle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.825rem;
+    color: var(--text-muted);
+  }
+
+  .project-card {
+    display: block;
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+  }
+
+  .project-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .project-name {
+    font-weight: 550;
+    font-size: 0.98rem;
+    letter-spacing: -0.01em;
+  }
+
+  .project-description {
+    margin: 0;
+    font-size: 0.925rem;
+    color: var(--text-muted);
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.725rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+  }
+
+  .arrow {
+    color: var(--text-subtle);
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .link-row:hover .arrow,
+  .project-card:hover .arrow {
+    color: var(--text);
+    transform: translate(2px, -2px);
+  }
+
+  .footer {
+    margin-top: 4.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.825rem;
+    color: var(--text-subtle);
+  }
+
+  .footer-domain {
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 520px) {
+    .container {
+      padding: 2rem 1.25rem 2rem;
+    }
+    .header {
+      margin-bottom: 3rem;
+    }
+    .link-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+  }
+</style>
