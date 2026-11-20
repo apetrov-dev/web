@@ -22,10 +22,9 @@ bun run preview
 
 ## Deploying to Cloudflare Pages
 
-1. Push this repository to GitHub (`github.com/apetrov-dev/web`).
-2. In the Cloudflare dashboard, go to **Workers & Pages → Create → Pages → Connect to Git**.
-3. Select the repository and configure:
-   - **Framework preset:** `Astro`
-   - **Build command:** `bun run build` (or `npm run build`)
-   - **Build output directory:** `dist`
-4. After the first deploy, open the project's **Custom domains** tab and add `apetrov.dev` (and optionally `www.apetrov.dev`).
+Pushes to `main` automatically build and deploy to Cloudflare Pages via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+
+Required GitHub Actions repository secrets (`Settings → Secrets and variables → Actions`):
+
+- `CLOUDFLARE_API_TOKEN` — Cloudflare API token with `Account → Cloudflare Pages → Edit`
+- `CLOUDFLARE_ACCOUNT_ID` — your Cloudflare Account ID
